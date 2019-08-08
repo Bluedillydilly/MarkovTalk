@@ -30,22 +30,21 @@ class TransitionMatrix:
         return self.matrix[self.keys[before.lower()]][self.keys[after.lower()]]
 
     def initMatrix(self):
-        for row in range(self.getKeyCount):
-            self.matrix[row] = zeros(self.getKeyCount())
-
+        self.matrix = zeros((self.getKeyCount(), self.getKeyCount()))
+        
     def addToMatrix(self, before, after):
         """
             Adds a WORD - WORD to the matrix.
             Increases the element to show the before is followed by after.
 
         """
-        self.matrix[self.keys[before.lower()]][self.keys[after.lower()]] += 1
+        self.matrix[self.keys[before]][self.keys[after]] += 1
 
     def normalize(self):
         """
             turns the raw counts into ratios that sum to 1 for the row
         """
-        for row in range(self.getKeyCount):
+        for row in range(self.getKeyCount()):
             self.matrix[row] /= sum(self.matrix[row])
 
     def __repr__(self):
@@ -53,4 +52,7 @@ class TransitionMatrix:
             A text representation of transition Matrix.
             WIP, table look?
         """
-        print(self.matrix) 
+        print(self.keys)
+        if self.matrix != [[]]:
+            print(self.matrix) 
+        return ''
