@@ -12,6 +12,7 @@ class TransitionMatrix:
             Params:
         """
         self.keys = {}
+        self.words = []
         self.keyCount = 0
         self.matrix = [[]]
 
@@ -21,13 +22,20 @@ class TransitionMatrix:
         """
         if word not in self.keys.keys():
             self.keys[word] = self.getKeyCount()
+            self.words += [word]
             self.keyCount += 1
+
+    def getWords(self):
+        return self.words
 
     def getKeyCount(self):
         return self.keyCount
 
     def get(self, before, after):
         return self.matrix[self.keys[before.lower()]][self.keys[after.lower()]]
+
+    def getRow(self, word):
+        return self.matrix[self.keys[word]]
 
     def initMatrix(self):
         self.matrix = zeros((self.getKeyCount(), self.getKeyCount()))
