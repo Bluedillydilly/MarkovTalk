@@ -22,3 +22,5 @@ Program is composed of 4 parts
 1. Have python (3.0+ as this was tested on 3.7.2) and numpy installed.
 2. Put any input text files in the input folder
 3. Run MarkovTalk.py
+
+If one wants to change how much text is outputted edit numWord in genText
