@@ -10,11 +10,13 @@ Program is composed of 4 parts
 * genText - responsible for generating a potential abitrary amount of new lines of text using the previously generated transition matrix(TM)
 
 ## The Goal
+* Create sentences that seem related to the input test.
+    * The goal has not been reached.
 
 ## The Future
-* Provide an url to extract text from. Support only certain websites? ie wikipedia
+* Provide an url to extract text from. Support only certain websites? ie wikipedia.
 * Fix capitialization of words following '.'s, '!'s, and '?'.
-* Provide the option to save the output to a textfile
+* Provide the option to save the output to a textfile.
 
 ## How to Run
 1. Have python (3.0+ as this was tested on 3.7.2) and numpy installed.
