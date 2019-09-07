@@ -28,7 +28,7 @@ def genTM():
     TM.normalize()
     return TM
 
-def processLine(line):
+def tokenizeLine(line):
     """
     
     """
@@ -45,11 +45,11 @@ def processLine(line):
     
     
 def addKeys(line, TM):
-    lineProcessed = processLine(line)
+    lineProcessed = tokenizeLine(line)
     for word in lineProcessed:
         TM.addKey(word)
 
 def addEntries(line, TM):
-    wordAdj = processLine(line)
+    wordAdj = tokenizeLine(line)
     for i in range(len(wordAdj)-1):
         TM.addToMatrix(wordAdj[i], wordAdj[i+1])
