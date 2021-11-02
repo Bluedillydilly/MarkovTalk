@@ -1,52 +1,72 @@
 from numpy import zeros, sum
+from dataclasses import dataclass
+from typing import List, Tuple, TypedDict, NamedTuple, Dict
 
+@dataclass
 class TransitionMatrix:
     """
-        A class for the transition matrix involved with markov chain models
+        A class for the transition matrix involved successors of words in text.
     """
+    words: List[str] = []
+    word_count: int = 0
+    matrix: Dict[str,Dict[str, float]] = {}
 
-    def __init__(self):
+    def initializeMatrix(self) -> None:
         """
-            Constructor for a TransitionMatrix.
-
-            Params:
+            Initializes a N x N matrix dependent on words list.
         """
-        self.keys = {}
-        self.words = []
-        self.keyCount = 0
-        self.matrix = [[]]
+        self.matrix = zeros((self.word_count, self.word_count))
 
-    def addKey(self, word):
+
+    def addWord(self, word: str) -> None:
         """
             A new word to add as a key to the transition matrix.
         """
-        if word not in self.keys.keys():
-            self.keys[word] = self.getKeyCount()
-            self.words += [word]
-            self.keyCount += 1
+        if word.lower() not in self.words:
+            # add to word list
+            self.words.append( word.lower() )
+            self.word_count += 1
+            # add to occurrence
+            self.matrix[ word ] = []
 
-    def getWords(self):
+
+
+    def getWords(self) -> List[str]:
+        """
+            Gets the list of words in matrix
+        """
         return self.words
 
-    def getKeyCount(self):
-        return self.keyCount
 
-    def get(self, before, after):
-        return self.matrix[self.keys[before.lower()]][self.keys[after.lower()]]
-
-    def getRow(self, word):
-        return self.matrix[self.keys[word]]
-
-    def initMatrix(self):
-        self.matrix = zeros((self.getKeyCount(), self.getKeyCount()))
-        
-    def addToMatrix(self, before, after):
+    def get(self, before: str, after: str) -> float:
         """
-            Adds a WORD - WORD to the matrix.
+            Get the number of BEFORE - AFTER word pair frequency.
+            After normalizing, gets the density of the pair.
+        """
+        return self.matrix[before][after]
+
+
+    def getRow(self, word) -> Dict[str, float]:
+        """
+            Gets after words of a before word.
+        """
+        return self.matrix[word]
+
+    def addPairs(self, pairs: List[(str, str)]) -> None:
+        """
+            Add multiple BEFORE - AFTER word pairs.
+        """
+        for (before, after) in pairs:
+            pass
+
+    def addPair(self, before, after):
+        """
+            Adds a WORD - WORD pair to the matrix.
             Increases the element to show the before is followed by after.
 
         """
         self.matrix[self.keys[before]][self.keys[after]] += 1
+
 
     def normalize(self):
         """
@@ -54,13 +74,3 @@ class TransitionMatrix:
         """
         for row in range(self.getKeyCount()):
             self.matrix[row] /= sum(self.matrix[row])
-
-    def __repr__(self):
-        """
-            A text representation of transition Matrix.
-            WIP, table look?
-        """
-        print(self.keys)
-        if self.matrix != [[]]:
-            print(self.matrix) 
-        return ''
