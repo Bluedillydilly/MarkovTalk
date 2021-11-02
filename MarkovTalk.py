@@ -1,22 +1,25 @@
 """
-
+    Main driver for creating markov chain and generating text from it.
 """
 
+from TransitionMatrix import TransitionMatrix
 from genTM import genTM
 from genText import genText
 
-def main():
+def main() -> None:
     """
-
+        Creates a transition matrix and output generated text from it.
     """
     welcome()
-    TM = genTM()
-    output = genText(TM)
+
+    TM: TransitionMatrix = genTM()
+    output: str = genText(TM)
+    
     print(output)
 
-def welcome():
+def welcome() -> None:
     """
-
+        Prints a welcome message.
     """
     text = 'Put input file in input folder'
 
