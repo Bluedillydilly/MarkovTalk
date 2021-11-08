@@ -1,20 +1,22 @@
-from numpy import zeros, sum
+from numpy import zeros, sum, random
 from dataclasses import dataclass, field
-from typing import List, Set, Tuple, TypedDict, NamedTuple, Dict
+from typing import List, Set, Tuple, TypeVar, TypedDict, NamedTuple, Dict, Generic
 from functools import reduce
+
+T = TypeVar("T")
 
 class Pair(NamedTuple):
     before: str
     after: str
 
 @dataclass
-class TransitionMatrix:
+class TransitionMatrix(Generic[T]):
     """
         A class for the transition matrix involved successors of words in text.
     """
-    words: Set[str] = field(default_factory=set)
+    words: Set[T] = field(default_factory=set)
     word_count: int = 0
-    matrix: Dict[str,Dict[str, float]] = field(default_factory=dict)
+    matrix: Dict[T,Dict[T, float]] = field(default_factory=dict)
 
     def initializeMatrix(self) -> None:
         """Initializes a N x N matrix dependent on words list.
@@ -22,7 +24,7 @@ class TransitionMatrix:
         self.matrix = zeros((self.word_count, self.word_count))
 
 
-    def addWord(self, word: str) -> None:
+    def addWord(self, word: T) -> None:
         """A new word to add as a key to the transition matrix.
 
             Param:
@@ -46,7 +48,7 @@ class TransitionMatrix:
         return self.words
 
 
-    def get(self, before: str, after: str) -> float:
+    def get(self, before: T, after: T) -> float:
         """
             Get the number of BEFORE - AFTER word pair frequency.
             After normalizing, gets the density of the pair.
@@ -60,6 +62,17 @@ class TransitionMatrix:
         """
         return self.matrix[before][after]
 
+    def getRow(self, before: T ) -> List[float]:
+        """
+            
+        """
+        return self.matrix[before]
+
+    def getNext(self, before: T ) -> T:
+        """
+            Gets the after word given the before word.
+        """
+        return random.choice( list(self.matrix[before].keys()), p=list(self.matrix[before].values()) )
 
     def addPairs(self, pairs: List[Pair]) -> None:
         """
@@ -104,9 +117,11 @@ if __name__ == "__main__":
         (__file__[ i ], __file__[ i+1 ]) for i in range(len(__file__) -1) ]
     print(f"Init word pairs: {pairs}")
         
-    # add all the BEFORE - AFTER pairs to TM
     tm.addPairs( pairs )
 
-    # convert frequency of pairs to densities
     tm.normalize()
+
+    print( tm.getNext('i'))
+
+    
 
